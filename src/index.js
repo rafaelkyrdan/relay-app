@@ -1,6 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 import ReactDOM from 'react-dom'
+import PokemonPage from './views/PokemonPage'
 import ListPage from './views/ListPage'
 import { Router, Route, browserHistory, applyRouterMiddleware } from 'react-router'
 import useRelay from 'react-router-relay'
@@ -20,6 +21,8 @@ ReactDOM.render(
     history={browserHistory}
   >
     <Route path='/' component={ListPage} queries={ViewerQueries} />
+    <Route path='/create' component={PokemonPage} queries={ViewerQueries} />
+    <Route path='/view/:id' component={PokemonPage} queries={ViewerQueries} />
   </Router>
   , document.getElementById('root')
 )

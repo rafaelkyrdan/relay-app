@@ -2,6 +2,7 @@ import React from 'react'
 import classes from './ListPage.css'
 import Relay from 'react-relay'
 import PokemonPreview from '../components/PokemonPreview'
+import AddNew from '../components/AddNew'
 
 class ListPage extends React.Component {
   static propTypes = {
@@ -11,13 +12,14 @@ class ListPage extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.title}>
-          {`There are ${this.props.viewer.allPokemons.edges.length} Pokemons in your pokedex`}
+         {`There are ${this.props.viewer.allPokemons.edges.length} Pokemons in your pokedex`}
         </div>
         <div className={classes.container}>
-          {this.props.viewer.allPokemons.edges.map((edge) => edge.node).map((pokemon) =>
-            <PokemonPreview key={pokemon.id} pokemon={pokemon} />
-          )
-          }
+         {this.props.viewer.allPokemons.edges.map((edge) => edge.node).map((pokemon) =>
+           <PokemonPreview key={pokemon.id} pokemon={pokemon} />
+         )
+         }
+          <AddNew />
         </div>
       </div>
     )
