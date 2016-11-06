@@ -3,6 +3,7 @@ import Relay from 'react-relay'
 import { Link } from 'react-router'
 import PokemonCard from '../components/PokemonCard'
 import CreatePokemonMutation from '../mutations/CreatePokemonMutation'
+import DeletePokemonMutation from '../mutations/DeletePokemonMutation'
 import deleteIcon from '../assets/delete.svg'
 import classes from './PokemonPage.css'
 
@@ -11,6 +12,7 @@ class PokemonPage extends React.Component {
   static propTypes = {
     viewer: React.PropTypes.object,
     params: React.PropTypes.object,
+    router: React.PropTypes.object,
   }
 
   static contextTypes = {
@@ -29,6 +31,26 @@ class PokemonPage extends React.Component {
     return !this.props.params.hasOwnProperty('id')
   }
 
+  _addPokemon = () => {
+    Relay.Store.commitUpdate(      // Dispatch CreatePokemonMutation and pass the name and the url to it
+      new CreatePokemonMutation({name: this.state.name, url: this.state.url, viewer: this.props.viewer}),
+      {
+        onSuccess: () => this.props.router.push('/'),
+        onFailure: (transaction) => console.log(transaction),
+      },
+    )
+  }
+
+  _deletePokemon = () => {
+    Relay.Store.commitUpdate(
+     new DeletePokemonMutation({pokemonId: this.props.params.id, viewerId: this.props.viewer.id}),
+      {
+        onSuccess: () => this.context.router.replace('/'),
+        onFailure: (transaction) => console.log(transaction),
+      },
+   )
+  }
+
   render () {
     return (
       <div className={classes.root}>
@@ -43,7 +65,7 @@ class PokemonPage extends React.Component {
           <div className={classes.buttonContainer}>
             <div>
               {!this._isAddNew() &&
-                <img src={deleteIcon} className={classes.deleteIcon} />
+                <img src={deleteIcon} className={classes.deleteIcon} onClick={this._deletePokemon} />
               }
             </div>
             <div className={classes.actionButtonContainer}>
