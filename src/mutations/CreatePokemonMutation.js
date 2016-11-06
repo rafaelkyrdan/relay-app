@@ -1,6 +1,6 @@
 import Relay from 'react-relay'
 
-export default class CreatePokemonMutation extends Relay.Mutation {
+export default class AddPokemonMutation extends Relay.Mutation {
 
   static fragments = {
     viewer: () => Relay.QL`

@@ -30,4 +30,10 @@ export default class DeletePokemonMutation extends Relay.Mutation {
       id: this.props.pokemonId,
     }
   }
+
+  getOptimisticResponse () {
+    return {
+      deletedId: this.props.pokemonId,
+    }
+  }
 }
