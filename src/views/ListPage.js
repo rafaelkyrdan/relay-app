@@ -1,8 +1,8 @@
 import React from 'react'
-import classes from './ListPage.css'
 import Relay from 'react-relay'
 import PokemonPreview from '../components/PokemonPreview'
 import AddNew from '../components/AddNew'
+import classes from './ListPage.css'
 
 class ListPage extends React.Component {
   static propTypes = {

@@ -1,6 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
+import { Link } from 'react-router'
 import PokemonCard from '../components/PokemonCard'
+import CreatePokemonMutation from '../mutations/CreatePokemonMutation'
 import deleteIcon from '../assets/delete.svg'
 import classes from './PokemonPage.css'
 
@@ -8,8 +10,11 @@ class PokemonPage extends React.Component {
 
   static propTypes = {
     viewer: React.PropTypes.object,
-    router: React.PropTypes.object,
     params: React.PropTypes.object,
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.object,
   }
 
   constructor (props) {
@@ -42,14 +47,12 @@ class PokemonPage extends React.Component {
               }
             </div>
             <div className={classes.actionButtonContainer}>
-              <div
-                className={classes.button + ' ' + classes.cancelButton}
-                onClick={() => this.props.router.push('/')}
-              >
+              <Link className={classes.button + ' ' + classes.cancelButton + ' ' + classes.link} to={'/'}>
                 Cancel
-              </div>
+              </Link>
               <div
                 className={classes.button + ' ' + classes.saveButton}
+                onClick={this._addPokemon}
               >
                 {this._isAddNew() ? 'Add' : 'Save'}
               </div>
@@ -73,15 +76,16 @@ export default Relay.createContainer(
     }),
     fragments: {
       viewer: () => Relay.QL`
-        fragment on Viewer {
+      fragment on Viewer {
+        id
+        ${CreatePokemonMutation.getFragment('viewer')}
+        Pokemon(id: $id) @include( if: $pokemonExists ) {
           id
-          Pokemon(id: $id) @include( if: $pokemonExists ) {
-            id
-            name
-            url
-          }
+          name
+          url
         }
-      `,
+      }
+    `,
     },
   },
 )
